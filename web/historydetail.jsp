@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="container-fulid">
-            <c:set var="DETAILRENTALLIST" value="${sessionScope.DETAILRENTALLIST}"/>
+            <c:set var="DETAILRENTALLIST" value="${requestScope.DETAILRENTALLIST}"/>
             <table border="1" style="width: 100%;text-align: center">
                 <thead style="">
                     <tr>

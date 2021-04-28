@@ -48,7 +48,17 @@ public class GetCarDetailServlet extends HttpServlet {
             HttpSession session = request.getSession();
             if (session.getAttribute("ROLE").equals("user")) {
                 CarDAO Cdao = new CarDAO();
-                List<CarDTO> list = Cdao.getAllCarDetailWithID(carID);
+                String rentaldate = "1900-01-01";
+                if (!request.getParameter("txtRentDate").isEmpty()) {
+                    rentaldate = request.getParameter("txtRentDate");
+                    request.setAttribute("RENTDATE", rentaldate);
+                }
+                String returndate = "3000-12-31";
+                if (!request.getParameter("txtReturnDate").isEmpty()) {
+                    returndate = request.getParameter("txtReturnDate");
+                    request.setAttribute("RETURNDATE", returndate);
+                }
+                List<CarDTO> list = Cdao.getCarDetailWithIDAndDate(carID, rentaldate, returndate);
                 request.setAttribute("LISTDETAIL", list);
                 url = CARDETAIL_PAGE;
             }

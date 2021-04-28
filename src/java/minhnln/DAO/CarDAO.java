@@ -153,6 +153,40 @@ public class CarDAO implements Serializable {
         }
     }
 
+    public List<CarDTO> getCarDetailWithIDAndDate(String carID, String rentDate, String returnDate) throws Exception {
+        list = new ArrayList<>();
+        try {
+            con = db.openConnection();
+            String sql = "SELECT C.CarID,C.CarName,C.CarImage,CD.LicenceID,CD.CarDetailID,C.Price \n"
+                    + "FROM tblCarDetail CD \n"
+                    + "JOIN tblCar C ON CD.CarID = C.CarID \n"
+                    + "FULL OUTER JOIN tblRentalDetail RD ON CD.CarDetailID = RD.CarDetailID\n"
+                    + "WHERE C.CarID = ? AND \n"
+                    + "CD.CarDetailID NOT IN (	SELECT RD.CarDetailID\n"
+                    + "				FROM tblRentalDetail RD JOIN tblRental R ON RD.RentalID = R.RentalID\n"
+                    + "				WHERE R.Status = 1 AND RD.CarID = ?\n"
+                    + "				AND (((? >= RD.rentdate AND ? <= RD.returnDate)\n"
+                    + "				OR ((? <= RD.rentdate AND ? > RD.rentdate) \n"
+                    + "				OR ( ? < RD.returnDate AND ? >= RD.returnDate)))))";
+            stm = con.prepareStatement(sql);
+            stm.setString(1, carID);
+            stm.setString(2, carID);
+            stm.setString(3, rentDate);
+            stm.setString(4, returnDate);
+            stm.setString(5, rentDate);
+            stm.setString(6, returnDate);
+            stm.setString(7, rentDate);
+            stm.setString(8, returnDate);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                list.add(new CarDTO(carID, rs.getString("CarName"), rs.getString("CarImage"), rs.getString("LicenceID"), rs.getString("CarDetailID"), rs.getFloat("Price")));
+            }
+        } finally {
+            CloseConnection();
+            return list;
+        }
+    }
+
     public List<CarDTO> getAllCarDetail() throws Exception {
         list = new ArrayList<>();;
         try {

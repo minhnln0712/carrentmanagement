@@ -85,6 +85,8 @@
                                             </c:if>
                                             <c:if test="${ROLE == 'user'}">
                                                 <c:if test="${car.quantity > 0 }">
+                                                    <input type="hidden" name="txtRentDate" value="${requestScope.RENTDATE}" min="${DATENOW}"/>
+                                                    <input type="hidden" name="txtReturnDate" value="${requestScope.RETURNDATE}" min="${DATENOW}"/>
                                                     <input type="submit" value="Rent" class="btn btn-dark" />
                                                 </c:if>
                                             </c:if>

@@ -87,15 +87,19 @@ public class RentalDetailDAO implements Serializable {
         list = new ArrayList<>();
         try {
             con = db.openConnection();
-            String sql = "SELECT RD.RentalDetailID,RD.RentalID,CD.CarID,RD.rentDate,RD.returnDate,CD.CarDetailID,CD.LicenceID "
-                    + "FROM tblRentalDetail RD JOIN tblCarDetail C ON RD.CarID = CD.CarID "
-                    + "WHERE RentalID = ? ";
+            String sql = "SELECT RD.RentalDetailID,RD.RentalID,CD.CarID,RD.rentDate,RD.returnDate,CD.CarDetailID,CD.LicenceID,C.CarName,C.CarImage\n"
+                    + "FROM tblCarDetail CD \n"
+                    + "JOIN tblRentalDetail RD ON RD.CarDetailID = CD.CarDetailID\n"
+                    + "JOIN tblCar C ON CD.CarID = C.CarID\n"
+                    + "WHERE RD.RentalID = ? ";
             stm = con.prepareStatement(sql);
             stm.setString(1, rentalID);
             rs = stm.executeQuery();
             while (rs.next()) {
                 list.add(new RentalDetailDTO(rs.getString("RentalDetailID"), rentalID, rs.getString("CarID"), rs.getString("CarDetailID"), rs.getString("LicenceID"), rs.getString("CarName"), rs.getString("CarImage"), rs.getDate("RentDate"), rs.getDate("ReturnDate")));
             }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         } finally {
             CloseConnection();
             return list;

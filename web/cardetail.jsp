@@ -68,10 +68,10 @@
                             </div>
                         </td>
                         <td>
-                            <input class="form-control" type="date" name="txtRentDate" style="width: 200px;" min="${sessionScope.DATENOW}" value="" required>
+                            <input class="form-control" type="date" name="txtRentDate" style="width: 200px;" min="${requestScope.RENTDATE}" value="" required>
                         </td>
                         <td>
-                            <input class="form-control" type="date" name="txtReturnDate" style="width: 200px;" min="${sessionScope.DATENOW}" value="" required>
+                            <input class="form-control" type="date" name="txtReturnDate" style="width: 200px;" min="${requestScope.RENTDATE}" value="" required>
                         </td>
                         <td>${car.licenseID}</td>
                         <td>
